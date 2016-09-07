@@ -38,23 +38,16 @@ class IOReporter extends Reporter implements ReporterInterface
             '$parametersCount' => count($benchmarks)
         ];
 
-        echo '<pre><code>';
-        echo strtr($template, $vars);
-        echo '</code></pre>';
+        // echo '<pre><code>';
+        // echo strtr($template, $vars);
+        // echo '</code></pre>';
 
-        try
-        {
-            file_put_contents($this->path,  strtr($template, $vars));
-        }
-        catch(Exception $ex)
-        {
-        }
+        file_put_contents($this->path,  strtr($template, $vars));
     }
 
     public function setPath($path)
     {
-        /* Validate if path exist */
-
+        /* @TODO Validate if path exist */
         $this->path = $path;
     }
 

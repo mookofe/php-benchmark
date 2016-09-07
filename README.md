@@ -208,7 +208,7 @@ Filtering
     ];
     
     $functionNameFilter = new \Mookofe\Benchmark\Filters\FunctionName($functionNames);
-    $reporter->addFilter($nameFilter);
+    $reporter->addFilter($functionNameFilter);
     
     /** Generate report */
     $reporter->generate($sorter);
@@ -236,6 +236,8 @@ TODO
   - Accept arguments by canonical name
   - Create WebReporterRepository to allow benchmark on controllers and other places
   - Return exception when argument and signature does not match
+  - Package tests
+  - try/catch validations
 
 License
 ----

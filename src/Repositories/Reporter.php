@@ -36,10 +36,8 @@ abstract class Reporter
     protected function flatternResults()
     {
         $flatResults = [];
-        foreach ($this->results as $result)
-        {
-            foreach ($result->getBenchmarks() as $benchmark)
-            {
+        foreach ($this->results as $result) {
+            foreach ($result->getBenchmarks() as $benchmark) {
                 $flatResults[] = FlatResult::createFromBenchmark($result->name, $benchmark);
             }          
         }
