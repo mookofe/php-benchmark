@@ -3,7 +3,7 @@ mookofe/php-benchmark
 
 PHP library that allows you benchmark and compare the performance of functions
 
-<!-- [![Build Status](https://travis-ci.org/mookofe/php-benchmark.svg?branch=master)](https://travis-ci.org/mookofe/php-benchmark) -->
+[![Build Status](https://travis-ci.org/mookofe/laravel-support.svg?branch=master)](https://travis-ci.org/mookofe/laravel-support)
 [![Latest Stable Version](https://poser.pugx.org/mookofe/php-benchmark/v/stable)](https://packagist.org/packages/mookofe/php-benchmark)
 [![Latest Unstable Version](https://poser.pugx.org/mookofe/php-benchmark/v/unstable)](https://packagist.org/packages/mookofe/php-benchmark)
 [![License](https://poser.pugx.org/mookofe/laravel-support/license.svg)](https://packagist.org/packages/mookofe/laravel-support)
@@ -236,7 +236,7 @@ TODO
   - Accept arguments by canonical name
   - Create WebReporterRepository to allow benchmark on controllers and other places
   - Return exception when argument and signature does not match
-  - Package tests
+  - Finish package tests
   - try/catch validations
 
 License
