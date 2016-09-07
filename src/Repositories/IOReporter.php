@@ -10,14 +10,32 @@ use Mookofe\Benchmark\Exceptions\PathRequiredException;
 
 class IOReporter extends Reporter implements ReporterInterface
 {
-
+    /**
+     * Path where report will be saved
+     *
+     * @var string
+     */
     protected $path;
 
+    /**
+     * Construct a IOReporte instance
+     * 
+     * @param array $results Result of detailed benchmark
+     *
+     * @return void
+     */
     public function __construct(array $results)
     {
         parent::__construct($results);
     }
 
+    /**
+     * Generate final report
+     *
+     * @param \Mookofe\Benchmark\Sorters\absSorter $sorter Sorter used to order the result
+     *
+     * @return array
+     */
     public function generate(absSorter $sorter)
     {
         /* Verify if path is valid */
@@ -38,19 +56,33 @@ class IOReporter extends Reporter implements ReporterInterface
             '$parametersCount' => count($benchmarks)
         ];
 
-        // echo '<pre><code>';
-        // echo strtr($template, $vars);
-        // echo '</code></pre>';
+        echo '<pre><code>';
+        echo strtr($template, $vars);
+        echo '</code></pre>';
 
         file_put_contents($this->path,  strtr($template, $vars));
     }
 
+    /**
+     * Set the path where the report file will be saved
+     *
+     * @param string $path New path to set
+     *
+     * @return void
+     */
     public function setPath($path)
     {
         /* @TODO Validate if path exist */
         $this->path = $path;
     }
 
+    /**
+     * Generates the summary in human readable format
+     *
+     * @param array $results Results to be converted
+     *
+     * @return string
+     */
     protected function getSummary(array $results)
     {
         $summary = "";
@@ -60,6 +92,13 @@ class IOReporter extends Reporter implements ReporterInterface
         return $summary;
     }
 
+    /**
+     * Generates summary row in human readable format
+     *
+     * @param FlatResult $flatResult Flat result to be converted into a string row
+     *
+     * @return string
+     */
     protected function buildSummaryRow(FlatResult $flatResult)
     {
         return  $this->buildSpacedColumn($flatResult->methodName, 17)
@@ -71,6 +110,14 @@ class IOReporter extends Reporter implements ReporterInterface
             . "\n";
     }
 
+    /**
+     * Calculates the position of the field values to be able to have a nice looking text plain table
+     *
+     * @param string $value Value in the row
+     * @param size $size Maximun characters needed
+     *
+     * @return string
+     */
     protected function buildSpacedColumn($value, $size)
     {
         return str_pad($value, $size);

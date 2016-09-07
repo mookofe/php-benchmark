@@ -4,8 +4,18 @@ namespace Mookofe\Benchmark;
 
 class Benchmark
 {   
-
+    /**
+     * Stores the parameter sets 
+     *
+     * @var array
+     */
     private $parameterSet;
+
+    /**
+     * Stores every result execution to later be able to calculate, avg, min, and more
+     *
+     * @var array
+     */
     private $results = null;
 
     /**
