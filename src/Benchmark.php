@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Benchmark;
+namespace Mookofe\Benchmark;
 
 class Benchmark
 {
