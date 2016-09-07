@@ -1,0 +1,19 @@
+********************************************************************************
+ Benchmark Report
+********************************************************************************
+
+Running times: $runningTimes
+Number of functions: $functionsNumber
+Number of parameters set: $parametersCount
+
+FILTERS:
+$filters
+
+
+SUMMARY:
+Function        Parameters             Min       Max       Avg       Median
+--------------------------------------------------------------------------------
+$summary
+
+
+* Times in microsecond (µs)

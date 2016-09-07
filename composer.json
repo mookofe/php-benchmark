@@ -1,0 +1,27 @@
+{
+    "name": "mookofe/php-benchmark",
+    "description": "PHP library that allows you benchmark and compare the performance of functions",
+    "keywords": ["benchmark", "performance", "functions", "package", "Victor Cruz", "mookofe" ],
+    "license": "MIT",
+    "version": "v0.0.1",
+    "authors": [
+        {
+            "name": "Victor Cruz",
+            "email": "cruzrosario@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.7",
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.0.*",
+        "mockery/mockery": "dev-master",
+        "laravel/framework": "5.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mookofe\\Benchmark\\": "src/"
+        }
+    },    
+    "minimum-stability": "stable"
+}
