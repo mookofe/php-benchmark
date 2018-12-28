@@ -1,33 +1,39 @@
 <?php
+declare(strict_types = 1);
 
-namespace Mookofe\Benchmark\Repositories;
+namespace Mookofe\Benchmark\Reporters;
 
 use Mookofe\Benchmark\FlatResult;
-use Mookofe\Benchmark\Sorters\absSorter;
+use Mookofe\Benchmark\BenchmarkResult;
+use Mookofe\Benchmark\Sorters\AbstractSorter;
 use Mookofe\Benchmark\Filters\FilterManager;
 use Mookofe\Benchmark\Contracts\FilterInterface;
-use Mookofe\Benchmark\Contracts\ReporterInterface;
 
-abstract class Reporter
+/**
+ * Class AbstractReporter
+ *
+ * @author Victor Cruz <cruzrosario@gmail.com>
+ */
+abstract class AbstractReporter
 {   
     /**
      * Filters to be applied when report runs
      *
-     * @var Mookofe\Benchmark\Contracts\FilterInterface
+     * @var FilterInterface[]
      */
     protected $filters;
 
     /**
      * List of benchmarks
      *
-     * @var array
+     * @var BenchmarkResult[]
      */
     protected $results;
 
     /**
      * Sorter to be applied to sort summary
      *
-     * @var Mookofe\Benchmark\Sorters\absSorter
+     * @var AbstractSorter
      */
     protected $sorter;
 
@@ -35,8 +41,6 @@ abstract class Reporter
      * Construct a reporter instance
      *
      * @param array $results List of benchmarks
-     *
-     * @return void
      */
     public function __construct(array $results)
     {
@@ -47,26 +51,25 @@ abstract class Reporter
     /**
      * Generate report
      *
-     * @param \Mookofe\Benchmark\Sorters\absSorter $sorter Sorter used to order the result
+     * @param AbstractSorter $sorter Sorter used to order the result
      *
      * @return array
      */
-    protected function generateReport(absSorter $sorter)
+    protected function generateReport(AbstractSorter $sorter): array
     {
         $this->sorter = $sorter;
 
-        $filtered = $this->filter($this->flatternResults());
+        $filtered = $this->filter($this->flattenResults());
+
         return $this->orderBy($filtered);
     }
 
     /**
      * Add filter to filters list
      *
-     * @param \Mookofe\Benchmark\Contracts\FilterInterface $filter Filter to be applied to the report
-     *
-     * @return void
+     * @param FilterInterface $filter Filter to be applied to the report
      */
-    public function addFilter(FilterInterface $filter)
+    public function addFilter(FilterInterface $filter): void
     {
         $this->filters[] = $filter;
     }
@@ -76,7 +79,7 @@ abstract class Reporter
      *
      * @return array
      */
-    protected function flatternResults()
+    protected function flattenResults(): array
     {
         $flatResults = [];
         foreach ($this->results as $result) {
@@ -95,10 +98,10 @@ abstract class Reporter
      *
      * @return array
      */
-    protected function filter(array $flatResults)
+    protected function filter(array $flatResults): array
     {
         if (count($this->filters) > 0) {
-            return FilterManager::Proccess($this->filters, $flatResults);
+            return FilterManager::process($this->filters, $flatResults);
         }
 
         return $flatResults;
@@ -111,9 +114,8 @@ abstract class Reporter
      *
      * @return array
      */
-    public function orderBy(array $flatResults)
+    public function orderBy(array $flatResults): array
     {
         return $this->sorter->sort($flatResults);
     }
-
 }

@@ -11,7 +11,7 @@ PHP library that allows you benchmark and compare the performance of functions
 
 Features
 ----
-  - Optimize for PHP7
+  - Optimize for PHP 7
   - The library accept an arbitrary number of user defined functions to test against each other
   - Accept functions under test as callable type. 
   - Accept functions under test with a canonical name
@@ -234,11 +234,9 @@ Filtering
 TODO
 ----
   - Accept arguments by canonical name
-  - Create WebReporterRepository to allow benchmark on controllers and other places
   - Return exception when argument and signature does not match
   - Finish package tests
-  - try/catch validations
-  - Enable Continous Integration
+  - Enable Continuous Integration
 
 License
 ----

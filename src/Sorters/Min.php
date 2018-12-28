@@ -1,14 +1,14 @@
 <?php
+declare(strict_types = 1);
 
 namespace Mookofe\Benchmark\Sorters;
 
-use Mookofe\Benchmark\Sorters\absSorter;
-use Mookofe\Benchmark\Sorters\Order\absOrder;
+use Mookofe\Benchmark\Sorters\Orientation\absOrder;
 
-class Min extends absSorter
+class Min extends AbstractSorter
 {
 	/**
-     * Stores the field name used to order
+     * Field name used to order
      *
      * @var string
      */
@@ -17,12 +17,12 @@ class Min extends absSorter
     /**
      * Create an instance of min sorter
      *
-     * @param \Mookofe\Benchmark\Sorters\Order\absOrde $order 	Order to be organized (Asc, Desc)
+     * @param OrientationInterface $orientation Orientation to be organized (Asc, Desc)
      *
      * @return void
      */
-    public function __construct(absOrder $order)
+    public function __construct(OrientationInterface $orientation)
     {
-        parent::__construct($order);        
+        parent::__construct($orientation);
     }    
 }
