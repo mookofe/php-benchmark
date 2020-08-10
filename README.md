@@ -149,7 +149,7 @@ Sorting:
 ----
 
 
-###Sort by minimum descending
+### Sort by minimum descending
 
 Sort the summary report by the min field
 
@@ -211,7 +211,7 @@ $sorter = new Median($asc);
 Filtering
 ----
 
-###Filter by method name
+### Filter by method name
 ```php
 use Mookofe\Benchmark\Sorters\Median;
 use Mookofe\Benchmark\Sorters\Order\Asc;
