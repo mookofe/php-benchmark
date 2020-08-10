@@ -3,10 +3,10 @@ declare(strict_types = 1);
 
 namespace Mookofe\Benchmark\Sorters;
 
-use Mookofe\Benchmark\Sorters\absSorter;
+use Mookofe\Benchmark\Sorters\AbstractSorter;
 use Mookofe\Benchmark\Sorters\Orientation\absOrder;
 
-class Avg extends absSorter
+class Avg extends AbstractSorter
 {
 	/**
      * Stores the field name used to order

@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Mookofe\Benchmark\Sorters;
 
-use Mookofe\Benchmark\Sorters\absSorter;
+use Mookofe\Benchmark\Sorters\AbstractSorter;
 use Mookofe\Benchmark\Sorters\Orientation\absOrder;
 
 class Median extends absSorter

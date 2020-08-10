@@ -13,7 +13,7 @@ class Desc implements OrientationInterface
     /**
      * @inheritdoc
      */
-    public function compare(float $a, float $b): int
+    public function orderFunction(float $a, float $b): int
     {
         return ($b > $a) ? +1 : -1;
     }

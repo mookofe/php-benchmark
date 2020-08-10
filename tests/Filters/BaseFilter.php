@@ -1,12 +1,10 @@
-<?php
-declare(strict_types = 1);
+<?php 
 
 namespace Mookofe\Benchmark\Tests\Filters;
 
-use PHPUnit\Framework\TestCase;
 use Mookofe\Benchmark\FlatResult;
 
-abstract class BaseFilter extends TestCase
+abstract class BaseFilter extends \PHPUnit_Framework_TestCase
 {
 	protected function getFlatResults()
 	{
@@ -17,4 +15,6 @@ abstract class BaseFilter extends TestCase
 			new FlatResult('quickSort', [4, 2, 1], rand(0, 100), rand(0, 100), rand(0, 100), rand(0, 100)),
 		];
 	}
+
+    
 }

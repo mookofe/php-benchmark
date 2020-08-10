@@ -6,6 +6,11 @@ namespace Mookofe\Benchmark\Filters;
 use Mookofe\Benchmark\FlatResult;
 use Mookofe\Benchmark\Contracts\FilterInterface;
 
+/**
+ * Class FunctionName
+ *
+ * @author Victor Cruz <cruzrosario@gmail.com>
+ */
 class FunctionName implements FilterInterface
 {
     /**
@@ -16,9 +21,9 @@ class FunctionName implements FilterInterface
     protected $functionNames;
 
     /**
-     * Create a functionName filter instance 
+     * FunctionName constructor.
      *
-     * @return void
+     * @param array $functionNames
      */
     public function __construct(array $functionNames)
     {
@@ -26,21 +31,16 @@ class FunctionName implements FilterInterface
     }
 
     /**
-     * Verify if the current filter match with the flatResult specified
-     *
-     * @param Mookofe\Benchmark\FlatResult $flatResult Flat result to be evaluated
-     *
-     * @return boolean
+     * @inheritdoc
      */
-    public function match(FlatResult $flatResult)
+    public function match(FlatResult $result): bool
     {
         foreach ($this->functionNames as $functionName) {
-            if ($functionName == $flatResult->methodName) {
+            if ($functionName === $result->methodName) {
                 return true;
             }
         }
+
         return false;
     }
-
-    
 }

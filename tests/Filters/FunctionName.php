@@ -1,13 +1,14 @@
-<?php
-declare(strict_types = 1);
+<?php 
 
 namespace Mookofe\Benchmark\Tests\Filters;
 
 use Mookofe\Benchmark\Filters\FilterManager;
+use Mookofe\Benchmark\Sorters\Orientation\Asc;
 
 class FunctionName extends BaseFilter
 {
-    public function testGetChanges(): void
+
+    public function testGetChanges()
     {
         $flatResults = $this->getFlatResults();
         $filteredExpectedCount = 2;
@@ -16,9 +17,10 @@ class FunctionName extends BaseFilter
         $this->assertTrue(count($flatResults) != $filteredExpectedCount);
 
         $filter = new \Mookofe\Benchmark\Filters\FunctionName(['bubbleSort']); 
-        $filtered = FilterManager::Proccess([$filter], $flatResults);
+        $filtered = FilterManager::process([$filter], $flatResults);
 
         /** Assert filtered items match the expected */
         $this->assertEquals($filteredExpectedCount, count($filtered));
     }    
+    
 }
