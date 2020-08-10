@@ -1,14 +1,13 @@
-<?php 
+<?php
+declare(strict_types = 1);
 
 namespace Mookofe\Benchmark\Tests\Filters;
 
 use Mookofe\Benchmark\Filters\FilterManager;
-use Mookofe\Benchmark\Sorters\Order\Asc;
 
 class FunctionName extends BaseFilter
 {
-
-    public function testGetChanges()
+    public function testGetChanges(): void
     {
         $flatResults = $this->getFlatResults();
         $filteredExpectedCount = 2;
@@ -22,5 +21,4 @@ class FunctionName extends BaseFilter
         /** Assert filtered items match the expected */
         $this->assertEquals($filteredExpectedCount, count($filtered));
     }    
-    
 }

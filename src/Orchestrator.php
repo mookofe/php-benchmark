@@ -1,10 +1,15 @@
 <?php
+declare(strict_types = 1);
 
 namespace Mookofe\Benchmark;
 
+/**
+ * Orchestrate the tests that are going to be performed
+ *
+ * @author Victor Cruz <cruzrosario@gmail.com>
+ */
 class Orchestrator
 {
-    
     /**
      * Array or methods to be tested
      *
@@ -13,7 +18,7 @@ class Orchestrator
     private $methods;
 
     /**
-     * Array of marameters set to be tested
+     * Array of parameters set to be tested
      *
      * @var array
      */
@@ -26,18 +31,16 @@ class Orchestrator
      */
     public function __construct()
     {
-        $methods = [];
-        $parameters = [];
+        $this->methods = [];
+        $this->parameters = [];
     }
 
     /**
      * Add method to the list to be tested
      *
-     * @param \Mookofe\Benchmark\Method $method Method to be added to the list
-     *
-     * @return @void
+     * @param Method $method Method to be added to the list
      */
-    public function addMethod(Method $method)
+    public function addMethod(Method $method): void
     {
         $this->methods[] = $method;
     }
@@ -46,10 +49,8 @@ class Orchestrator
      * Add Parameters set to list
      *
      * @param mixed
-     *
-     * @return @void
      */
-    public function addParameters()
+    public function addParameters(): void
     {
         $this->parameters[] = func_get_args();
     }
@@ -61,11 +62,13 @@ class Orchestrator
      *
      * @return array
      */
-    public function run($times = 1)
+    public function run(int $times = 1)
     {
+        /** @var Method $method */
         foreach ($this->methods as $method) {
             $method->generateBenchmark($times, $this->parameters);
         }
+
         return $this->methods;
     }
 }

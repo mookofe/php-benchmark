@@ -1,7 +1,13 @@
 <?php
+declare(strict_types = 1);
 
 namespace Mookofe\Benchmark;
 
+/**
+ * Represents the flat calculated results for a given Method
+ *
+ * @author Victor Cruz <cruzrosario@gmail.com>
+ */
 class FlatResult
 {   
     /**
@@ -51,14 +57,12 @@ class FlatResult
      *
      * @param string $methodName Name of the method to be created
      * @param array $parameters List of parameters to be added
-     * @param double $min Minimum time lasted of execution
-     * @param double $max Maximum time lasted of execution
-     * @param double $avg Average time lasted of execution
-     * @param double $median Median time lasted of execution
-     *
-     * @return void
+     * @param float $min Minimum time lasted of execution
+     * @param float $max Maximum time lasted of execution
+     * @param float $avg Average time lasted of execution
+     * @param float $median Median time lasted of execution
      */
-    public function __construct($methodName, $parameters, $min, $max, $avg, $median)
+    public function __construct(string $methodName, array $parameters, float $min, float $max, float $avg, float $median)
     {
         $this->methodName = $methodName;
         $this->parameters = $parameters;
@@ -73,13 +77,20 @@ class FlatResult
      * Create a Flat Result from a Benchmark
      *
      * @param string $methodName Name of the method to be created
-     * @param Mookofe\Benchmark\Benchmark $benchmark Benchmark item
+     * @param Benchmark $benchmark Benchmark item
      *
      * @return FlatResult
      */
     public static function createFromBenchmark($methodName, Benchmark $benchmark)
     {
-        return new FlatResult($methodName, $benchmark->getParameterSet(), $benchmark->getMin(), $benchmark->getMax(), $benchmark->getAvg(), $benchmark->getMedian());
+        return new FlatResult(
+            $methodName,
+            $benchmark->getParameterSet(),
+            $benchmark->getMin(),
+            $benchmark->getMax(),
+            $benchmark->getAvg(),
+            $benchmark->getMedian()
+        );
     }
 
     /**
@@ -87,12 +98,13 @@ class FlatResult
      *
      * @return string
      */
-    public function readableParameters()
+    public function readableParameters(): string
     {
         $readable = "(";
         foreach ($this->parameters as $parameter) {
             $readable .= $this->parseParameters($parameter);
         }
+
         return $readable .= ")";
     }
 
@@ -103,15 +115,16 @@ class FlatResult
      *
      * @return string
      */
-    protected function parseParameters($parameters)
+    protected function parseParameters(array $parameters): string
     {
         if (is_array($parameters)) {
             return "[" . implode(', ', $parameters) . "]";
         }
-        elseif (is_object($parameters)) {
+
+        if (is_object($parameters)) {
             return "Object";
         }
-        
-        return $parameters;
+
+        return '';
     }
 }

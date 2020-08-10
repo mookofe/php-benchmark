@@ -1,10 +1,13 @@
 <?php
+declare(strict_types = 1);
 
 namespace Mookofe\Benchmark;
 
-use Mookofe\Benchmark\Benchmark;
-use Mookofe\Benchmark\BenchmarkResult;
-
+/**
+ * Represents the function to be evaluated
+ *
+ * @author Victor Cruz <cruzrosario@gmail.com>
+ */
 class Method
 {
     /**
@@ -24,7 +27,7 @@ class Method
     /**
      * Create a new Method instance.
      *
-     * @return void
+     * @param mixed $methodName
      */
     public function __construct($methodName)
     {
@@ -36,10 +39,8 @@ class Method
      *
      * @param int $times Number of times to be executed the same method
      * @param array $parametersSets Set of parameters that will be tested
-     *
-     * @return @void
      */
-    public function generateBenchmark($times, $parametersSets)
+    public function generateBenchmark(int $times, array $parametersSets): void
     {
         foreach ($parametersSets as $parameterSet) {
             
@@ -70,7 +71,7 @@ class Method
      *
      * @return array
      */
-    public function getBenchmarks()
+    public function getBenchmarks(): array
     {
         return $this->benchmarks;
     }    

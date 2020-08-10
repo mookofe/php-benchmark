@@ -1,49 +1,47 @@
 <?php
+declare(strict_types = 1);
 
 namespace Mookofe\Benchmark;
 
+/**
+ * Represents the result for a single method evaluation
+ *
+ * @author Victor Cruz <cruzrosario@gmail.com>
+ */
 class BenchmarkResult
 {
     /**
      * Start time for benchmark
      *
-     * @var double
+     * @var float
      */
     private $startTime;
 
     /**
      * End time for benchmark
      *
-     * @var double
+     * @var float
      */
     private $endTime;
-
-    /**
-     * Function procesing time
-     *
-     * @var double
-     */
-    private $processingTime;
 
     /**
      * Start timer to count
      *
      * @return void
      */
-    public function start()
+    public function start(): void
     {
         $this->startTime = microtime(true);
     }
 
     /**
-     * Finihsh a execution 
+     * Finish a execution
      *
      * @return void
      */
-    public function end()
+    public function end(): void
     {
         $this->endTime = microtime(true);
-        $this->processingTime = $this->endTime-$this->startTime;
     }
 
     /**
@@ -51,10 +49,10 @@ class BenchmarkResult
      *
      * Represented in microseconds
      *
-     * @return decimal
+     * @return float
      */
-    public function getProcessingTime()
+    public function getProcessingTime(): float
     {
-        return $this->processingTime * 1000000;
+        return ($this->endTime-$this->startTime) * 1000000;
     }    
 }

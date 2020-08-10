@@ -1,7 +1,13 @@
 <?php
+declare(strict_types = 1);
 
 namespace Mookofe\Benchmark;
 
+/**
+ * Represents the calculated benchmark for a given parameter set
+ *
+ * @author Victor Cruz <cruzrosario@gmail.com>
+ */
 class Benchmark
 {   
     /**
