@@ -1,7 +1,7 @@
 mookofe/php-benchmark
 =========
 
-PHP library that allows you benchmark and compare the performance of functions
+PHP library that allows you benchmark and compare the performance of functions.
 
 <!--[![Build Status](https://travis-ci.org/mookofe/php-benchmark.svg?branch=master)](https://travis-ci.org/mookofe/php-benchmark)-->
 [![Latest Stable Version](https://poser.pugx.org/mookofe/php-benchmark/v/stable)](https://packagist.org/packages/mookofe/php-benchmark)
@@ -12,13 +12,13 @@ PHP library that allows you benchmark and compare the performance of functions
 Features
 ----
   - Optimize for PHP7
-  - The library accept an arbitrary number of user defined functions to test against each other
+  - The library accepts an arbitrary number of user defined functions to test against each other
   - Accept functions under test as callable type. 
   - Accept functions under test with a canonical name
   - The library accept an arbitrary number of argument sets to be passed to each function under test.
   - Functions can be tested N number of times
-  - Summary report
-  - Summary report can be stream can be sent to an i/o stream in human readable format
+  - Includes Summary report
+  - Summary report can be streamed can be sent to an i/o stream in human readable format
   - Summary report can be order by (Min, Max, Avg and Median) execution time (Ascending and Descending)
   - Report can be filtered by function name and parameters set
   
@@ -31,24 +31,11 @@ Version
 Installation
 --------------
 
-**Preparation**
+To get started, use Composer to add the package to your project's dependencies:
 
-Open your composer.json file and add the following to the require array: 
-
-```json
-"mookofe/php-benchmark": "dev-master"
-```
-
-**Install dependencies**
 
 ```
-$ php composer install
-```
-
-Or
-
-```batch
-$ php composer update
+$ composer require mookofe/php-benchmark
 ```
 
 
@@ -56,71 +43,79 @@ Basic Usage:
 ----
 
 ```php
-	function bubbleSort($array)
-    {
-        if (!$length = count($array)) {
-            return $array;
-        }      
-         
-        for ($outer = 0; $outer < $length; $outer++) {
-            for ($inner = 0; $inner < $length; $inner++) {
-                if ($array[$outer] < $array[$inner]) {
-                    $tmp = $array[$outer];
-                    $array[$outer] = $array[$inner];
-                    $array[$inner] = $tmp;
-                }
+function bubbleSort(array $array): void
+{
+    if (!$length = count($array)) {
+        return $array;
+    }      
+     
+    for ($outer = 0; $outer < $length; $outer++) {
+        for ($inner = 0; $inner < $length; $inner++) {
+            if ($array[$outer] < $array[$inner]) {
+                $tmp = $array[$outer];
+                $array[$outer] = $array[$inner];
+                $array[$inner] = $tmp;
             }
+        }
+    }
+}
+
+function quickSort(array $array): void
+{
+    if (!$length = count($array)) {
+        return $array;
+    }
+ 
+    $k = $array[0];
+    $x = $y = array();
+     
+    for ($i=1;$i<$length;$i++) {
+        if ($array[$i] <= $k) {
+            $x[] = $array[$i];
+        } else {
+           $y[] = $array[$i];
         }
     }
 
-    function quickSort($array)
-    {
-        if (!$length = count($array)) {
-            return $array;
-        }
-     
-        $k = $array[0];
-        $x = $y = array();
-         
-        for ($i=1;$i<$length;$i++) {
-            if ($array[$i] <= $k) {
-                $x[] = $array[$i];
-            } else {
-               $y[] = $array[$i];
-            }
-        }
-        return array_merge(quickSort($x),array($k),quickSort($y));
-    }
+    return array_merge(quickSort($x),array($k),quickSort($y));
+}
 ```
 Given these two functions, let's benchmark them
     
 ```php
-    
-    //Define orchestrator
-    $orch = new \Mookofe\Benchmark\Orchestrator;
-    
-    /** Add paraters to test */
-    $orch->addParameters([5, 4, 3, 2, 1]);
-    $orch->addParameters([100, 5, 300]);
-    $orch->addParameters([20, 10, 9, 25]);
-    
-    /** Add methods */
-    $orch->addMethod(new \Mookofe\Benchmark\Method('bubbleSort'));
-    $orch->addMethod(new \Mookofe\Benchmark\Method('quickSort'));
-    
-    /** Run tests 10 times*/
-    $results = $orch->run(10);
-	
-	 /** Run reporter*/
-    $reporter = new \Mookofe\Benchmark\Repositories\IOReporter($results);
-    $reporter->setPath('results.txt');
-    
-    //Sorter
-    $asc = new \Mookofe\Benchmark\Sorters\Order\Asc;
-    $sorter = new \Mookofe\Benchmark\Sorters\Min($asc);
-    
-    /** Generate report */
-    $reporter->generate($sorter);
+use Mookofe\Benchmark\Method;
+use Mookofe\Benchmark\Sorters\Min;
+use Mookofe\Benchmark\Orchestrator;
+use Mookofe\Benchmark\Sorters\Order\Asc;
+use Mookofe\Benchmark\Repositories\IOReporter;
+
+...
+   
+//Define orchestrator
+$orchestrator = Orchestrator();
+
+/** Add paraters to test */
+$orchestrator->addParameters([5, 4, 3, 2, 1]);
+$orchestrator->addParameters([100, 5, 300]);
+$orchestrator->addParameters([20, 10, 9, 25]);
+
+/** Add methods */
+$orchestrator->addMethod(new Method('bubbleSort'));
+$orchestrator->addMethod(new Method('quickSort'));
+
+/** Run tests 10 times */
+$results = $orchestrator->run(10);
+
+/** Run reporter */
+$reporter = new IOReporter($results);
+$reporter->setPath('results.txt');
+
+//Sorter
+$asc = new Asc();
+$sorter = Min($asc);
+
+/** Generate report */
+$reporter->generate($sorter);
 ```
 
 Results:
@@ -160,37 +155,57 @@ Sorting:
 Sort the summary report by the min field
 
 ```php
-    /** Sorter */
-    $desc = new \Mookofe\Benchmark\Sorters\Order\Desc;
-    $sorter = new \Mookofe\Benchmark\Sorters\Min($desc);
-    
-    /** Generate report */
-    $reporter->generate($sorter);
+use Mookofe\Benchmark\Sorters\Min;
+use Mookofe\Benchmark\Sorters\Order\Desc;
+
+...
+
+/** Sorter */
+$desc = new Desc();
+$sorter = new Min($desc);
+
+/** Generate report */
+$reporter->generate($sorter);
 ```
 
-###Sort by maximum
+### Sort by maximum
 Sort the summary report by the max field
 
 ```php
-    /** Sorter */
-    $asc = new \Mookofe\Benchmark\Sorters\Order\Asc;
-    $sorter = new \Mookofe\Benchmark\Sorters\Max($asc);
+use Mookofe\Benchmark\Sorters\Max;
+use Mookofe\Benchmark\Sorters\Order\Asc;
+
+...
+
+/** Sorter */
+$asc = new Asc();
+$sorter = new Max($asc);
 ```
 
-###Sort by average
+### Sort by average
 Sort the summary report by the avg field
 
 ```php
-    $asc = new \Mookofe\Benchmark\Sorters\Order\Asc;
-    $sorter = new \Mookofe\Benchmark\Sorters\Avg($asc);
+use Mookofe\Benchmark\Sorters\Max;
+use Mookofe\Benchmark\Sorters\Order\Avg;
+
+...
+
+$asc = Asc();
+$sorter = new Avg($asc);
 ```
 
-###Sort by median
+### Sort by median
 Sort the summary report by the median field
 
 ```php
-    $asc = new \Mookofe\Benchmark\Sorters\Order\Asc;
-    $sorter = new \Mookofe\Benchmark\Sorters\Median($asc);
+use Mookofe\Benchmark\Sorters\Max;
+use Mookofe\Benchmark\Sorters\Order\Median;
+
+...
+
+$asc = new Asc();
+$sorter = new Median($asc);
 ```
 
 
@@ -199,35 +214,47 @@ Filtering
 
 ###Filter by method name
 ```php
-    $asc = new \Mookofe\Benchmark\Sorters\Order\Asc;
-    $sorter = new \Mookofe\Benchmark\Sorters\Median($asc);
-    
-    /** Filters */
-    $functionNames = [
-    	'bubbleSort'
-    ];
-    
-    $functionNameFilter = new \Mookofe\Benchmark\Filters\FunctionName($functionNames);
-    $reporter->addFilter($functionNameFilter);
-    
-    /** Generate report */
-    $reporter->generate($sorter);
+use Mookofe\Benchmark\Sorters\Median;
+use Mookofe\Benchmark\Sorters\Order\Asc;
+use Mookofe\Benchmark\Filters\FunctionName;
+
+...
+
+$asc = new Asc();
+$sorter = new Median($asc);
+
+/** Filters */
+$functionNames = [
+    'bubbleSort'
+];
+
+$functionNameFilter = new FunctionName($functionNames);
+$reporter->addFilter($functionNameFilter);
+
+/** Generate report */
+$reporter->generate($sorter);
 ```
 
 
-###Filter by parameters set
+### Filter by parameters set
 ```php
-    $asc = new \Mookofe\Benchmark\Sorters\Order\Asc;
-    $sorter = new \Mookofe\Benchmark\Sorters\Median($asc);
-    
-    /** Filters */
-    $parametersFilter = new \Mookofe\Benchmark\Filters\Parameter();
-    $parametersFilter->addSet([5, 4, 3, 2, 1]);
-    $parametersFilter->addSet([100, 5, 300]);
-    $reporter->addFilter($parametersFilter);
-    
-    /** Generate report */
-    $reporter->generate($sorter);
+use Mookofe\Benchmark\Sorters\Median;
+use Mookofe\Benchmark\Sorters\Order\Asc;
+use Mookofe\Benchmark\Filters\Parameter;
+
+...
+
+$asc = new Asc();
+$sorter = Median($asc);
+
+/** Filters */
+$parametersFilter = new Parameter();
+$parametersFilter->addSet([5, 4, 3, 2, 1]);
+$parametersFilter->addSet([100, 5, 300]);
+$reporter->addFilter($parametersFilter);
+
+/** Generate report */
+$reporter->generate($sorter);
 ```
 
 
@@ -238,7 +265,7 @@ TODO
   - Return exception when argument and signature does not match
   - Finish package tests
   - try/catch validations
-  - Enable Continous Integration
+  - Enable Continuous Integration
 
 License
 ----
