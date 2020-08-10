@@ -1,10 +1,16 @@
 <?php
+declare(strict_types = 1);
 
 namespace Mookofe\Benchmark\Filters;
 
 use Mookofe\Benchmark\FlatResult;
 use Mookofe\Benchmark\Contracts\FilterInterface;
 
+/**
+ * Class Parameter
+ *
+ * @author Victor Cruz <cruzrosario@gmail.com>
+ */
 class Parameter implements FilterInterface
 {   
     /**
@@ -28,30 +34,23 @@ class Parameter implements FilterInterface
      * Add Parameter set to list
      *
      * @param mixed
-     *
-     * @return @void
      */
-    public function addSet()
+    public function addSet(): void
     {
         $this->parameterSets[] = func_get_args();
     }
 
     /**
-     * Verify if the current filter match with the flatResult specified
-     *
-     * @param Mookofe\Benchmark\FlatResult $flatResult Flat result to be evaluated
-     *
-     * @return boolean
+     * @inheritdoc
      */
-    public function match(FlatResult $flatResult)
+    public function match(FlatResult $result): bool
     {
         foreach ($this->parameterSets as $parameterSet) {
-            if ($flatResult->parameters === $parameterSet) {
+            if ($result->parameters === $parameterSet) {
                 return true;
             }
         }
 
         return false;
     }
-
 }

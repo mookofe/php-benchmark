@@ -1,15 +1,18 @@
 <?php
+declare(strict_types = 1);
 
 namespace Mookofe\Benchmark\Sorters;
 
-use Mookofe\Benchmark\Sorters\Order\absOrder;
+use Mookofe\Benchmark\FlatResult;
+use Mookofe\Benchmark\Sorters\Orientation\absOrder;
+use Mookofe\Benchmark\Sorters\Orientation\OrientationInterface;
 
-abstract class absSorter
+abstract class AbstractSorter
 {
     /**
      * Store the order for the sorting (Asc, Desc)
      *
-     * @var \Mookofe\Benchmark\Sorters\Order\absOrder
+     * @var
      */
     protected static $order;
 
@@ -18,39 +21,44 @@ abstract class absSorter
      *
      * @var string
      */
-    protected static $fieldName;
+    protected $fieldName;
+
+    /**
+     * @var OrientationInterface
+     */
+    private $orientation;
     
     /**
      * Create an instance of absSorter sorter
      *
-     * @param \Mookofe\Benchmark\Sorters\Order\absOrde $order   Order to be organized (Asc, Desc)
+     * @param OrientationInterface $orientation orientation to be sorted (Asc, Desc)
      *
      * @return void
      */
-    public function __construct(absOrder $order)
+    public function __construct(OrientationInterface $orientation)
     {
-        static::$order = $order;
+        $this->orientation = $orientation;
     }
 
     /**
      * Comparer function used to sort the flatResults
      *
-     * Poliformic behavior to use the field and sorter of the derived implementation
+     * Polymorphic behavior to use the field and sorter of the derived implementation
      *
      * @param \Mookofe\Benchmark\FlatResult $a   First flat result to compare
      * @param \Mookofe\Benchmark\FlatResult $b   Second flat result to compare
      *
      * @return boolean
      */
-    public static function compare($a, $b)
+    public static function compare(FlatResult $a, FlatResult $b): bool
     {
-        $fieldName = static::$fieldName;
+        $fieldName = $this->fieldName;
 
-        if ($a->$fieldName == $b->$fieldName){
+        if ($a->$fieldName === $b->$fieldName){
             return 0;
         }
 
-        return static::$order->orderFunction($a->$fieldName, $b->$fieldName);
+        return static::$orientatio->orderFunction($a->$fieldName, $b->$fieldName);
     }
 
     /**
@@ -63,6 +71,7 @@ abstract class absSorter
     public function sort($result)
     {
         usort($result, [get_class($this), 'compare']);
+
         return $result;
     }
 }

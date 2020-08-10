@@ -3,7 +3,7 @@
 namespace Mookofe\Benchmark\Tests\Filters;
 
 use Mookofe\Benchmark\Filters\FilterManager;
-use Mookofe\Benchmark\Sorters\Order\Asc;
+use Mookofe\Benchmark\Sorters\Orientation\Asc;
 
 class FunctionName extends BaseFilter
 {
@@ -17,7 +17,7 @@ class FunctionName extends BaseFilter
         $this->assertTrue(count($flatResults) != $filteredExpectedCount);
 
         $filter = new \Mookofe\Benchmark\Filters\FunctionName(['bubbleSort']); 
-        $filtered = FilterManager::Proccess([$filter], $flatResults);
+        $filtered = FilterManager::process([$filter], $flatResults);
 
         /** Assert filtered items match the expected */
         $this->assertEquals($filteredExpectedCount, count($filtered));

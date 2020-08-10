@@ -33,7 +33,6 @@ Installation
 
 To get started, use Composer to add the package to your project's dependencies:
 
-
 ```
 $ composer require mookofe/php-benchmark
 ```
